@@ -84,7 +84,7 @@ module Spaceship
         return resps.flat_map(&:to_models)
       end
 
-      def self.create(client: nil, name: nil, profile_type: nil, bundle_id_id: nil, certificate_ids: nil, device_ids: nil)
+      def self.create(client: nil, name: nil, profile_type: nil, bundle_id_id: nil, certificate_ids: nil, device_ids: nil, template_name: nil)
         client ||= Spaceship::ConnectAPI
         
         resp = client.post_profiles(
@@ -93,8 +93,11 @@ module Spaceship
           devices: device_ids,
           attributes: {
             name: name,
-            profileType: profile_type
-          }          
+            profileType: profile_type,
+            # Unsupported
+            # https://developer.apple.com/documentation/appstoreconnectapi/profilecreaterequest/data-data.dictionary/attributes-data.dictionary
+            # templateName: template_name
+          }         
         )
         return resp.to_models.first
       end
